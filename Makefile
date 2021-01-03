@@ -39,8 +39,6 @@ count:
 	@echo "Everything:"
 	@cat $(SRCS) *.h */*.h | wc
 
-.PHONY: clibrary.c
-
 picoc.o: picoc.c picoc.h
 table.o: table.c interpreter.h platform.h
 lex.o: lex.c interpreter.h platform.h
