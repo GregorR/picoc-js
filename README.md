@@ -1,4 +1,4 @@
-Originally forked from https://github.com/zsaleeba/picoc
+This is a (slight) fork of PicoC designed to be compatible with Emscripten.
 
 # Description
 
