@@ -519,7 +519,6 @@ struct Picoc_Struct {
     int LittleEndian;
 
     IOFILE *CStdOut;
-    IOFILE CStdOutBase;
 
     /* the picoc version string */
     const char *VersionString;

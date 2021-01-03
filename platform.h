@@ -30,7 +30,9 @@
  #define DEBUGGER
  #define USE_READLINE (defined by default for UNIX_HOST)
  */
+#ifndef __EMSCRIPTEN__
 #define USE_READLINE
+#endif
 
 #if defined(WIN32) /*(predefined on MSVC)*/
 #undef USE_READLINE

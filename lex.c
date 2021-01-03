@@ -209,7 +209,7 @@ enum LexToken LexGetNumber(Picoc *pc, struct LexState *Lexer, struct Value *Valu
                 }
             } else {
                 if (Result > ULONG_MAX || IsLong > 1) {
-                    if (Result > LONG_LONG_MAX) {
+                    if (Result > LLONG_MAX) {
                         ResultType = TypeUnsignedLongLong;
                     } else {
                         ResultType = TypeLongLong;

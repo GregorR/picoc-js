@@ -1,6 +1,10 @@
 #include "../picoc.h"
 #include "../interpreter.h"
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
 #ifdef USE_READLINE
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -37,9 +41,26 @@ void PlatformInit(Picoc *pc) { }
 
 void PlatformCleanup(Picoc *pc) { }
 
+#ifdef __EMSCRIPTEN__
+EM_JS(int, AsyncGetLine, (char *Buf, int MaxLen), {
+    return Asyncify.handleAsync(function() { return Module.stdinReadLineF(Buf, MaxLen); });
+});
+#endif
+
 /* get a line of interactive input */
 char *PlatformGetLine(char *Buf, int MaxLen, const char *Prompt)
 {
+#ifdef __EMSCRIPTEN__
+    int res;
+    if (Prompt != NULL)
+        printf("%s", Prompt);
+    fflush(stdout);
+    res = AsyncGetLine(Buf, MaxLen);
+    if (res > 0)
+        return Buf;
+    else
+        return NULL;
+#endif
 #ifdef USE_READLINE
     if (Prompt != NULL) {
         /* use GNU readline to read the line */

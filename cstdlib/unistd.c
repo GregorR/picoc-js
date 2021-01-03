@@ -141,11 +141,13 @@ void UnistdGetcwd(struct ParseState *Parser, struct Value *ReturnValue,
         Param[1]->Val->Integer);
 }
 
+#ifndef __EMSCRIPTEN__
 void UnistdGetdtablesize(struct ParseState *Parser, struct Value *ReturnValue,
     struct Value **Param, int NumArgs)
 {
     ReturnValue->Val->Integer = getdtablesize();
 }
+#endif
 
 void UnistdGetegid(struct ParseState *Parser, struct Value *ReturnValue,
     struct Value **Param, int NumArgs)
@@ -190,11 +192,13 @@ void UnistdGetpagesize(struct ParseState *Parser, struct Value *ReturnValue,
     ReturnValue->Val->Integer = getpagesize();
 }
 
+#ifndef __EMSCRIPTEN__
 void UnistdGetpass(struct ParseState *Parser, struct Value *ReturnValue,
     struct Value **Param, int NumArgs)
 {
     ReturnValue->Val->Pointer = (void*)getpass(Param[0]->Val->Pointer);
 }
+#endif
 
 #if 0
 void UnistdGetpgid(struct ParseState *Parser, struct Value *ReturnValue,
@@ -527,7 +531,9 @@ struct LibraryFunction UnistdFunctions[] =
     {UnistdFsync, "int fsync(int);"},
     {UnistdFtruncate, "int ftruncate(int, off_t);"},
     {UnistdGetcwd, "char *getcwd(char*, size_t);"},
+#ifndef __EMSCRIPTEN__
     {UnistdGetdtablesize, "int getdtablesize(void);"},
+#endif
     {UnistdGetegid, "gid_t getegid(void);"},
     {UnistdGeteuid, "uid_t geteuid(void);"},
     {UnistdGetgid, "gid_t getgid(void);"},
@@ -537,7 +543,9 @@ struct LibraryFunction UnistdFunctions[] =
     {UnistdGetlogin_r, "int getlogin_r(char*, size_t);"},
 /*    {UnistdGetopt, "int getopt(int, char * [], char *);"}, */
     {UnistdGetpagesize, "int getpagesize(void);"},
+#ifndef __EMSCRIPTEN__
     {UnistdGetpass, "char *getpass(char*);"},
+#endif
 /*    {UnistdGetpgid, "pid_t getpgid(pid_t);"}, */
     {UnistdGetpgrp, "pid_t getpgrp(void);"},
     {UnistdGetpid, "pid_t getpid(void);"},

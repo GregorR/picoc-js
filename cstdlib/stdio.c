@@ -903,7 +903,13 @@ void StdioSetupFunc(Picoc *pc)
     /* make a "struct __FILEStruct" which is the same size as a
         native FILE structure */
     StructFileType = TypeCreateOpaqueStruct(pc, NULL,
-        TableStrRegister(pc, "__FILEStruct"), sizeof(FILE));
+        TableStrRegister(pc, "__FILEStruct"),
+#ifndef __EMSCRIPTEN__
+        sizeof(FILE)
+#else
+        1024 /* Invalid, but using this type directly is invalid anyway, so *eh* */
+#endif
+        );
 
     /* get a FILE * type */
     FilePtrType = TypeGetMatching(pc, NULL, StructFileType, TypePointer, 0,
@@ -912,7 +918,7 @@ void StdioSetupFunc(Picoc *pc)
     /* make a "struct __va_listStruct" which is the same size as
         our struct StdVararg */
     TypeCreateOpaqueStruct(pc, NULL, TableStrRegister(pc, "__va_listStruct"),
-        sizeof(FILE));
+        sizeof(struct StdVararg));
 
     /* define EOF equal to the system EOF */
     VariableDefinePlatformVar(pc, NULL, "EOF", &pc->IntType,
